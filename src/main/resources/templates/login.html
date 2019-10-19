@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <div th:replace="common/header::common_header('登录')"></div>
+</head>
+<body>
+<form method="post" action="/sysUser/loginUser">
+    <input type="text" class="layui-input" placeholder="输入用户名" name="username">
+    <input type="password" class="layui-input" placeholder="请输入密码" name="password">
+    <button type="submit" class="button">登录</button>
+</form>
+
+<div th:replace="common/footer::common_footer"/>
+</body>
+</html>

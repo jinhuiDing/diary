@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:fragment="common_header(title)">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title th:text="${title}"></title>
+    <meta name="renderer" content="webkit" />
+    <link rel="stylesheet" th:href="@{/css/layui.css}" />
+    <script th:src="@{/js/jquery.js}"></script>
+    <script th:src="@{/js/layui.js}"></script>
+</head>
+</div>
