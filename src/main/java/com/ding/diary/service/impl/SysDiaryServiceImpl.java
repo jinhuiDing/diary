@@ -47,12 +47,14 @@ public class SysDiaryServiceImpl extends BaseServiceImpl<SysDiary> implements Sy
         Date date = new Date();
         System.out.println("date = " + date);
         diary.setCreateTime(date);
-        int diaryInsert = this.sysDiaryDao.insert(diary);
+        int diaryInsert = this.sysDiaryDao.insertSelective(diary);
         //保存中间表
         LoginUser user = LoginInterceptor.getUser();
         UserDiaryRelation userDiaryRelation = new UserDiaryRelation(user.getId(), diary.getId());
         int insert = this.userDiaryRelationService.insert(userDiaryRelation);
-        if (insert == 0 || diaryInsert == 0) throw new CustomException("记录信息失败");
+        if (insert == 0 || diaryInsert == 0) {
+            throw new CustomException("记录信息失败");
+        }
         return true;
     }
 

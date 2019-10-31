@@ -35,7 +35,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
         SysUser user = new SysUser();
         user.setName(username);
         SysUser sysUser = sysUserDao.selectOne(user);
-        if (sysUser == null) throw new CustomException("用户不存在");
+        if (sysUser == null) {
+            throw new CustomException("用户不存在");
+        }
         password += sysUser.getSalt();
         if (Md5Util.encodeByMd5(password).equals(sysUser.getPassword())) {
             HashMap<String, Object> map = new HashMap<>();

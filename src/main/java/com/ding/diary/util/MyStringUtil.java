@@ -10,6 +10,6 @@ package com.ding.diary.util;
 
 public class MyStringUtil {
     public static Boolean isEmpty(String content) {
-        return content == null || content.equals("");
+        return content == null || "".equals(content);
     }
 }

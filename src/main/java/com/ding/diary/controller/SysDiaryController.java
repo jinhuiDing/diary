@@ -27,6 +27,7 @@ public class SysDiaryController {
     @Resource
     private SysDiaryService sysDiaryService;
 
+
     /**
      * 通过主键查询单条数据
      *
@@ -41,10 +42,13 @@ public class SysDiaryController {
 
     @PostMapping("save")
     public ResponseVO save(@RequestParam("content") String content, @RequestParam("place") String place) {
-        if (MyStringUtil.isEmpty(content))
+        if (MyStringUtil.isEmpty(content)) {
             throw new CustomException("缺少参数");
+        }
         Boolean result = this.sysDiaryService.insert(content, place);
-        if (!result) throw new CustomException("保存失败,请稍后重试");
+        if (!result) {
+            throw new CustomException("保存失败,请稍后重试");
+        }
         return ResponseUtils.success();
     }
 

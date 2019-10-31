@@ -2,10 +2,9 @@ package com.ding.diary.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -22,6 +21,8 @@ import java.util.Map;
 
 
 public class JwtTokenUtils {
+    private static Logger log= LoggerFactory.getLogger(JwtTokenUtils.class);
+
     public static void main(String[] args) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("username", "ding");
@@ -29,7 +30,14 @@ public class JwtTokenUtils {
         phaseToken(s);
     }
 
-    private static final String secret = "zheshimiyao";
+    private static final String SECRET = "zheshimiyao";
+
+
+    /**
+     * 生成token
+     * @param payload
+     * @return
+     */
     public static String generatorToken(Map<String, Object> payload) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -41,15 +49,34 @@ public class JwtTokenUtils {
         return null;
     }
 
-    public static Key generatorSecret(){
-        SignatureAlgorithm algorithm = SignatureAlgorithm.HS256;
-        byte[] bytes = DatatypeConverter.parseBase64Binary(secret);
-        SecretKeySpec secretKeySpec = new SecretKeySpec(bytes, algorithm.getJcaName());
-        return secretKeySpec;
-    }
-    public static Claims phaseToken(String token) {
-        return Jwts.parser().setSigningKey(generatorSecret()).parseClaimsJws(token).getBody();
-//        return Jwts.parser().parseClaimsJws(token).getBody();
 
+    /**
+     * 生成密钥
+     * @return
+     */
+    private static Key generatorSecret() {
+        SignatureAlgorithm algorithm = SignatureAlgorithm.HS256;
+        byte[] bytes = DatatypeConverter.parseBase64Binary(SECRET);
+        return new SecretKeySpec(bytes, algorithm.getJcaName());
+    }
+
+
+    /**
+     * 解析token
+     * @param token
+     * @return
+     */
+    public static Claims phaseToken(String token) {
+        try {
+            return Jwts.parser().setSigningKey(generatorSecret()).parseClaimsJws(token).getBody();
+        } catch (ExpiredJwtException e) {
+            e.printStackTrace();
+        } catch (UnsupportedJwtException | SignatureException | IllegalArgumentException | MalformedJwtException e) {
+            log.warn(e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e){
+            log.warn(e.getMessage());
+        }
+        return null;
     }
 }

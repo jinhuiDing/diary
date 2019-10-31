@@ -7,6 +7,10 @@ package com.ding.diary.enu;
  * @version: 1.0
  */
 public enum ResponseCodeEnum {
+
+    /**
+     * 响应状态码
+     */
     SUCCESS(1000, "成功"),
     FORBIDDEN(1001, "无权访问"),
 

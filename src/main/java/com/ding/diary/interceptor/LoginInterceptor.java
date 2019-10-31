@@ -39,19 +39,28 @@ public class LoginInterceptor implements HandlerInterceptor {
 
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             Anonymous annotation = handlerMethod.getBeanType().getAnnotation(Anonymous.class);
-            if (annotation != null) return true;
+            if (annotation != null) {
+                return true;
+            }
             Anonymous methodAnnotation = handlerMethod.getMethodAnnotation(Anonymous.class);
-            if (methodAnnotation != null) return true;
+            if (methodAnnotation != null) {
+                return true;
+            }
 
             String token = request.getHeader("token");
-            if (token == null || token.equals("")) {
+            if (token == null || "".equals(token)) {
                 log.error("您未登录");
                 throw new UnLoginException();
             }
             Claims claims = JwtTokenUtils.phaseToken(token);
+            if (null==claims){
+                throw new UnLoginException();
+            }
             String name = (String) claims.get("username");
             Number id = (Number) claims.get("id");
-            if (name == null || name.equals("")) throw new CustomException("token有误");
+            if (name == null || "".equals(name)) {
+                throw new CustomException("token有误");
+            }
             LoginUser user = new LoginUser(name, id.longValue());
             THREAD_LOCAL.set(user);
             return true;
@@ -59,6 +68,10 @@ public class LoginInterceptor implements HandlerInterceptor {
         return false;
     }
 
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        THREAD_LOCAL.remove();
+    }
 
     public static LoginUser getUser() {
         return THREAD_LOCAL.get();

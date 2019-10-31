@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <div th:replace="common/header::common_header('我的日记本')"></div>
+
+</head>
+<body>
+
+<form action="#" id="form">
+    <input type="text" id="content" name="content">
+    <input type="text" id="place" name="place">
+    <button type="submit" class="layui-btn-primary">保存</button>
+</form>
+<div th:replace="common/footer::common_footer"/>
+</body>
+</html>
+<script>
+    $("#form").submit(function () {
+        var content = $("#content").val();
+        var place = $("#place").val();
+        $.ajax({
+            url:"/diary/diary/save",
+            method:"post",
+            headers:{"token": localStorage.getItem("token")},
+            date:$("#form").serialize(),
+            success:function (resp) {
+                if(resp.success){
+                    alert("保存成功")
+                }else {
+                    alert("保存失败,请稍后重试")
+                }
+            },error:function (resp) {
+                alert(resp.responseText+"error!")
+            }
+        })
+    })
+</script>

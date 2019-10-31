@@ -6,12 +6,29 @@
     <div th:replace="common/header::common_header('登录')"></div>
 </head>
 <body>
-<form method="post" action="/sysUser/loginUser">
+<form method="post" id="loginForm" action="" accept-charset="utf-8">
     <input type="text" class="layui-input" placeholder="输入用户名" name="username">
     <input type="password" class="layui-input" placeholder="请输入密码" name="password">
     <button type="submit" class="button">登录</button>
 </form>
-
+<a href="register">没有账号,点击注册</a>
 <div th:replace="common/footer::common_footer"/>
+
+<script>
+    $("#loginForm").submit(function () {
+        var date = $("#loginForm").serialize();
+        $.post("loginUser", date,function (result) {
+            if (result.success) {
+                console.log(result);
+                const token = result.data;
+                localStorage.setItem("token", token);
+                window.location.href="diary"
+            } else {
+                console.log("失败", +result)
+            }
+        });
+        return false;
+    })
+</script>
 </body>
 </html>
