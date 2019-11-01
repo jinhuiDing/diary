@@ -101,7 +101,7 @@
                 console.log(result);
                 const token = result.data;
                 localStorage.setItem("token", token);
-                window.location.href = "diary"
+                window.location.href = "[[@{/sysUser/diary}]]"
             } else {
                 console.log("失败", +result)
             }
