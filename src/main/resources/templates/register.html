@@ -2,16 +2,34 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <div th:replace="common/header::common_header('注册')"></div>
+    <div th:replace="common/header::common_header('用户注册')"></div>
 </head>
 <body>
-<form method="post" action="registerUser">
+<form method="post" id="register-form" action="#">
     <input type="text" class="layui-input" placeholder="输入用户名" name="username">
     <input type="password" class="layui-input" placeholder="请输入密码" name="password">
-    <input type="phone" class="layui-input" placeholder="请输入手机号" name="phone">
+    <input type="text" class="layui-input" placeholder="请输入手机号" name="phone">
     <button type="submit" class="button">登录</button>
 </form>
 </body>
 <div th:replace="common/footer::common_footer"/>
 
+<script>
+    $("#register-form").submit(function () {
+        var data = $("#register-form").serialize()
+        $.ajax({
+            url:"[[@{/sysUser/registerUser}]]",
+            method:"post",
+            headers:{"token":localStorage.getItem("token")},
+            data:data,
+            success:function (resp) {
+                alert("注册成功")
+            },
+            error:function (resp) {
+                alert(resp.responseText+"error!")
+            }
+        });
+        return false;
+    })
+</script>
 </html>

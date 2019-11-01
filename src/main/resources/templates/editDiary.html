@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <div th:replace="common/header::common_header('我的日记本')"></div>
+    <div th:replace="common/header::common_header('写日记')"></div>
 
 </head>
 <body>
@@ -20,10 +20,10 @@
         var content = $("#content").val();
         var place = $("#place").val();
         $.ajax({
-            url:"/diary/diary/save",
+            url:"[[@{/diary/save}]]",
             method:"post",
             headers:{"token": localStorage.getItem("token")},
-            date:$("#form").serialize(),
+            data:$("#form").serialize(),
             success:function (resp) {
                 if(resp.success){
                     alert("保存成功")

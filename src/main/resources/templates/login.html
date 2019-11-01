@@ -2,27 +2,106 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>登录</title>
-    <div th:replace="common/header::common_header('登录')"></div>
+    <div th:replace="common/header::common_header('记事本')"></div>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+        .content {
+            width: 100%;
+            height: 100%;
+            background: url('[[@{/images/login.jpg}]]') no-repeat 100% 100%;
+            background-size: 100%;
+            position: absolute;
+        }
+        .content .login{
+            position: relative;
+            top: 50%;
+            left: 50%;
+            width: 400px;
+            height: 280px;
+            margin-left: -200px;
+            margin-top: -140px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 5px;
+        }
+        .login-form .log-inp{
+            padding-top: 40px;
+            margin: 0 20%;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .log-inp input{
+            border: 0;
+            background-color: rgb(255,255,255,0);
+            padding: 5px 10px;
+            border-bottom: 1px solid #606266;
+        }
+        .log-inp .btn{
+            margin: 0 20%;
+            width: 60%;
+            padding: 5px;
+            border-radius: 30px;
+            color: white;
+            background-color: #65A3ED;
+            border: none;
+        }
+    </style>
 </head>
 <body>
-<form method="post" id="loginForm" action="" accept-charset="utf-8">
-    <input type="text" class="layui-input" placeholder="输入用户名" name="username">
-    <input type="password" class="layui-input" placeholder="请输入密码" name="password">
-    <button type="submit" class="button">登录</button>
-</form>
-<a href="register">没有账号,点击注册</a>
-<div th:replace="common/footer::common_footer"/>
+<div class="content">
+    <div class="login">
+        <form class="login-form" id="loginForm">
+            <div class="log-inp">
+                <label>账号:</label>
+                <input type="text" name="username" placeholder="请输入账号" />
+            </div>
+            <div class="log-inp">
+                <label>密码:</label>
+                <input type="password" name="password" placeholder="请输入密码" />
+            </div>
+            <div class="log-inp"><button class="btn"> 登录</button></div>
 
+        </form>
+        <p><a th:href="@{/sysUser/register}">没有账号,点击注册</a></p>
+
+    </div>
+</div>
+<!--<div class="main">
+    <div class="login-form">
+        <h1>用户登录</h1>
+        <div class="head">
+            <img src="images/user.png" alt=""/>
+        </div>
+        <form method="post" id="loginForm" action="" accept-charset="utf-8">
+            <input type="text" class="text" placeholder="输入用户名" name="username">
+            <input type="password" placeholder="请输入密码" name="password">
+            <button type="submit" class="button">登录</button>
+        </form>
+        <p><a href="register">没有账号,点击注册</a></p>
+    </div>
+</div>-->
+<div class="copy-right" th:replace="common/footer::common_footer"/>
+
+
+</body>
+</html>
 <script>
     $("#loginForm").submit(function () {
         var date = $("#loginForm").serialize();
-        $.post("loginUser", date,function (result) {
+        $.post("[[@{/sysUser/loginUser}]]", date, function (result) {
             if (result.success) {
                 console.log(result);
                 const token = result.data;
                 localStorage.setItem("token", token);
-                window.location.href="diary"
+                window.location.href = "diary"
             } else {
                 console.log("失败", +result)
             }
@@ -30,5 +109,3 @@
         return false;
     })
 </script>
-</body>
-</html>

@@ -3,7 +3,6 @@ package com.ding.diary.controller;
 import com.ding.diary.anno.Anonymous;
 import com.ding.diary.entity.SysUser;
 import com.ding.diary.exception.CustomException;
-import com.ding.diary.service.SysDiaryService;
 import com.ding.diary.service.SysUserService;
 import com.ding.diary.util.Md5Util;
 import com.ding.diary.util.ResponseUtils;
@@ -32,8 +31,7 @@ public class SysUserController {
      */
     @Autowired
     private SysUserService sysUserService;
-    @Autowired
-    private SysDiaryService sysDiaryService;
+
 
     /**
      * 通过主键查询单条数据
