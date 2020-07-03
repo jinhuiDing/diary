@@ -42,7 +42,7 @@ public class JwtTokenUtils {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             JwtBuilder jwtBuilder = Jwts.builder().setPayload(objectMapper.writeValueAsString(payload));
-            return jwtBuilder.signWith(SignatureAlgorithm.HS256, generatorSecret()).compact();
+            return jwtBuilder.signWith( generatorSecret(),SignatureAlgorithm.HS256).compact();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

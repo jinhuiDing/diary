@@ -11,12 +11,12 @@
             headers: {"token": localStorage.getItem("token")},
             success: function (rest) {
                 const data = rest.data;
-                var html="<table border='1' align='center' cellpadding='10' cellspacing='100'>";
-                for (var i =0;i<data.length;i++){
-                    html+="<tr align='center'> <td align='center'>"+data[i].content+"</td>"+"<td align='center'>"+data[i].place+"</td>";
-                    html+="</tr>"
+                var html = "<table border='1' align='center' cellpadding='10' cellspacing='100'>";
+                for (var i = 0; i < data.length; i++) {
+                    html += "<tr align='center'> <td align='center'>" + data[i].content + "</td>" + "<td align='center'>" + data[i].place + "</td>";
+                    html += "</tr>"
                 }
-                html+="</table>";
+                html += "</table>";
 
                 $("#div").html(html)
             }
@@ -26,9 +26,44 @@
 <body>
 
 <div id="div"></div>
+<table class="layui-table tc" id="diary" lay-filter="diary" lay-even lay-skin="line"></table>
 
 <a th:href="@{/sysUser/editDiary}">写日记</a>
 <div th:replace="common/footer::common_footer"/>
 
 </body>
 </html>
+
+<script>
+    layui.use([  'table'], function () {
+        // var form = layui.form;
+        // var laydate = layui.laydate;
+        // var laypage = layui.laypage;
+        // var layer = layui.layer;
+        // var util = layui.util;
+        var table = layui.table;
+        table.reader({
+            elem: "diary",
+            url: "[[@{/diary/getDiary}]]",
+            method: "post",
+
+            text: "暂无相关数据",
+            cols: [
+                [
+                    {
+                        field: 'content',
+                        title: '内容',
+                        width: 250,
+                        align: "center"
+                    }, {
+                    field: 'place',
+                    title: '地点',
+                    width: 250,
+                    align: "center"
+                }
+                ]
+            ]
+        })
+
+    })
+</script>
